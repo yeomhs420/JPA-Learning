@@ -13,7 +13,7 @@ import javax.persistence.EntityTransaction;
 import javax.transaction.TransactionManager;
 
 @SpringBootTest
-@Transactional
+//@Transactional
 public class EntityManagerTest {
 
     @Autowired
@@ -39,7 +39,7 @@ public class EntityManagerTest {
 
         man.setEmail("yeom@naver.com");
 
-        userRepository.save(man);
+        userRepository.save(man);   // persist(영속화)
 
         System.out.println("------------------------");
 
@@ -50,8 +50,7 @@ public class EntityManagerTest {
 
         System.out.println(userRepository.findAll());   // id=1 인 값은 영속성 context의 cahche에서 가져오게됨 (최신값)
 
-        userRepository.delete(man);  // Rollback, 위의 @Transactional 제거하면 해결
-
+        //userRepository.delete(man);  // Rollback, 위의 @Transactional 제거하면 해결
 
     }
 }

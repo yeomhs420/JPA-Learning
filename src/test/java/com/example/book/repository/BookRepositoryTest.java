@@ -87,4 +87,49 @@ class BookRepositoryTest {
 
         return publisherRepository.save(publisher);
     }
+
+
+
+
+    @Test
+    void bookCascadeTest(){
+        Book book = new Book();
+        book.setName("JPA 초격차 패키지");
+
+
+        Publisher publisher = new Publisher();
+        publisher.setName("패스트캠퍼스");
+
+
+        book.setPublisher(publisher);   // 연관관계 맺어줌 -> 비영속화 상태에서 엔티티간 연관관계 맺기가 안됨 (cascade로 연관관계 맺음)
+        bookRepository.save(book);  // persist된 book과 연관된 publisher가 cascade를 통해 같이 persist됨
+
+        publisher.addBook(book);
+        publisherRepository.save(publisher);
+
+        System.out.println("books: " + bookRepository.findAll());
+        System.out.println("publishers: " + publisherRepository.findAll());
+
+        Book book1 = bookRepository.findById(1L).get();
+        book1.getPublisher().setName("슬로우캠퍼스"); // merge된 book과 연관된 publisher가 cascade를 통해 merge됨
+
+        bookRepository.save(book1);
+
+        System.out.println(publisherRepository.findAll());
+
+
+
+
+        book1.setPublisher(null); // 연관관계 제거
+
+        bookRepository.save(book1);
+        bookRepository.deleteById(1L);  // remove된 book과 연관된 publisher가 cascade를 통해 remove되지만, 연관관계를 제거했기 때문에 영속성 전이x
+
+
+        System.out.println("books : " + bookRepository.findAll());
+        System.out.println("publishers : " + publisherRepository.findAll());
+
+
+    }
+
 }

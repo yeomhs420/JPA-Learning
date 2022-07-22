@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@NoArgsConstructor
 @Data
+@NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 public class Publisher extends BaseEntity {
@@ -23,5 +23,10 @@ public class Publisher extends BaseEntity {
 
     @OneToMany
     @JoinColumn(name = "publisher_id", insertable = false, updatable = false)
+    @ToString.Exclude
     private List<Book> books = new ArrayList<>();
+
+    public void addBook(Book book){
+        this.books.add(book);
+    }
 }

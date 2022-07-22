@@ -44,7 +44,7 @@ public class Book extends BaseEntity {
     private List<Review> reviews;
 
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})  // book이 persist나 merge 될 때, publisher도 같이 되게 cascade(종속) 시킴
     @ToString.Exclude
     private Publisher publisher;
 
